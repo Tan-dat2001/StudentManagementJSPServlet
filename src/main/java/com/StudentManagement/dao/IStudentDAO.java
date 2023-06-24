@@ -1,6 +1,5 @@
 package com.StudentManagement.dao;
 
-import com.StudentManagement.model.Khoa;
 import com.StudentManagement.model.Student;
 
 import java.sql.SQLException;
@@ -10,6 +9,8 @@ public interface IStudentDAO {
     public void insertStudent(Student student) throws SQLException;
 
     public Student selectStudentById(Long id);
+
+    public Student selectStudentByKhoa(String khoa);
 
     public List<Student> selectAllStudents();
 

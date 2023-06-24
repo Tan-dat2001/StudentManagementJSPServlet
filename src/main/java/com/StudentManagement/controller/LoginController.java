@@ -8,9 +8,17 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(name = "LoginController", value = "/LoginController")
 public class LoginController extends HttpServlet {
+//    private StudentDAO studentDAO;
+//
+//
+//    public void init(){
+//        studentDAO = new StudentDAO();
+//
+//    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -26,8 +34,11 @@ public class LoginController extends HttpServlet {
             StudentDAO studentDAO = new StudentDAO();
             Student student = studentDAO.checkLogin(username,password);
             if(student != null){
-                session.setAttribute("Student", student);
-                response.sendRedirect("views/list.jsp");
+                session.setAttribute("student", student);
+                String action = "listAllStudent";
+                response.sendRedirect("/StudentController?action=" + action);
+            }else{
+                response.sendRedirect("index.jsp");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -35,5 +46,8 @@ public class LoginController extends HttpServlet {
             log("error at login servlet: " + e.toString());
             e.printStackTrace();
         }
+//        }finally {
+//            response.sendRedirect("views/error.jsp");
+//        }
     }
 }

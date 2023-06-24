@@ -1,6 +1,5 @@
 package com.StudentManagement.dao;
 
-import com.StudentManagement.model.Khoa;
 import com.StudentManagement.model.Student;
 
 import java.sql.*;
@@ -41,15 +40,16 @@ public class StudentDAO implements IStudentDAO{
 //    private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
     @Override
     public void insertStudent(Student student) throws SQLException {
-        String sql = "insert into sinhvien(mssv,hoten,gioitinh,khoa_id,) values(?,?,?,?)";
+        String sql = "insert into sinhvien(mssv,hoten,gioitinh,khoa) values(?,?,?,?)";
         try (Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, student.getHoTen());
-            preparedStatement.setString(2, student.getMssv());
+            preparedStatement.setString(1, student.getMssv());
+            preparedStatement.setString(2, student.getHoTen());
             preparedStatement.setString(3, student.getGioiTinh());
-            preparedStatement.setLong(4, student.getKhoa_id());
+            preparedStatement.setString(4, student.getKhoa());
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             printSQLException(e);
         }
@@ -58,7 +58,7 @@ public class StudentDAO implements IStudentDAO{
     @Override
     public Student selectStudentById(Long id) {
         Student student = null;
-        String sql = "select mssv,hoten,gioitinh,khoa_id from sinhvien where id = ?";
+        String sql = "select mssv,hoten,gioitinh,khoa from sinhvien where id = ?";
         // Step 1: Establishing a Connection
         try (Connection connection = getConnection();
              // Step 2:Create a statement using connection object
@@ -74,9 +74,41 @@ public class StudentDAO implements IStudentDAO{
                 String mssv = rs.getString("mssv");
                 String hoTen = rs.getString("hoten");
                 String gioiTinh = rs.getString("gioitinh");
-                Long khoa_id = rs.getLong("khoa_id");
+                String khoaX = rs.getString("khoa");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
 
-                student = new Student(sinhvien_id,mssv,hoTen,gioiTinh,khoa_id);
+                student = new Student(sinhvien_id,mssv,hoTen,gioiTinh,khoaX,username,password);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return student;
+    }
+
+    @Override
+    public Student selectStudentByKhoa(String khoa) {
+        Student student = null;
+        String sql = "select mssv,hoten,gioitinh,khoa from sinhvien where khoa = ?";
+        // Step 1: Establishing a Connection
+        try (Connection connection = getConnection();
+             // Step 2:Create a statement using connection object
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            preparedStatement.setString(1, khoa);
+            System.out.println(preparedStatement);
+            // Step 3: Execute the query or update query
+            ResultSet rs = preparedStatement.executeQuery();
+
+            // Step 4: Process the ResultSet object.
+            while (rs.next()) {
+                Long sinhvien_id = rs.getLong("sinhvien_id");
+                String mssv = rs.getString("mssv");
+                String hoTen = rs.getString("hoten");
+                String gioiTinh = rs.getString("gioitinh");
+                String khoaX = rs.getString("khoa");
+                String usename = rs.getString("username");
+                String password = rs.getString("password");
+                student = new Student(sinhvien_id,mssv,hoTen,gioiTinh,khoaX,usename,password);
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -100,15 +132,17 @@ public class StudentDAO implements IStudentDAO{
 
             // Step 4: Process the ResultSet object.
             while (rs.next()) {
-//                Long sinhvien_id = rs.getLong("sinhvien_id");
-                String mssv = rs.getString("mssv");
-                String hoTen = rs.getString("hoten");
-                String gioiTinh = rs.getString("gioitinh");
-                Long khoa_id = rs.getLong("khoa_id");
-//                String username = rs.getString("username");
-//                String password = rs.getString("password");
-                students.add(new Student( mssv, hoTen, gioiTinh, khoa_id));
+               Student student = new Student();
+               student.setId(rs.getLong("sinhvien_id"));
+               student.setHoTen(rs.getString("hoten"));
+               student.setMssv(rs.getString("mssv"));
+               student.setKhoa(rs.getString("khoa"));
+               student.setGioiTinh(rs.getString("gioitinh"));
+               student.setUsername(rs.getString("username"));
+               student.setPassword(rs.getString("password"));
+               students.add(student);
             }
+            return students;
         } catch (SQLException e) {
             printSQLException(e);
         }
@@ -145,13 +179,13 @@ public class StudentDAO implements IStudentDAO{
 
     @Override
     public boolean updateStudent(Student student) throws SQLException {
-        String sql = "update sinhvien set mssv=?, hoten=?, gioitinh=?,khoa_id=? where sinhvien_id=?";
+        String sql = "update sinhvien set mssv=?, hoten=?, gioitinh=?,khoa=? where sinhvien_id=?";
         boolean rowUpdated;
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, student.getMssv());
             statement.setString(2, student.getHoTen());
             statement.setString(3, student.getGioiTinh());
-            statement.setLong(4, student.getKhoa_id());
+            statement.setString(4, student.getKhoa());
             rowUpdated = statement.executeUpdate() > 0;
         }
         return rowUpdated;
@@ -168,9 +202,9 @@ public class StudentDAO implements IStudentDAO{
             if(rs.next()){
                 student = new Student(rs.getLong("sinhvien_id"),
                         rs.getString("mssv"),
-                        rs.getString("hoTen"),
-                        rs.getString("gioiTinh"),
-                        rs.getLong("khoa_id"),
+                        rs.getString("hoten"),
+                        rs.getString("gioitinh"),
+                        rs.getString("khoa"),
                         rs.getString("username"),
                         rs.getString("password"));
             }

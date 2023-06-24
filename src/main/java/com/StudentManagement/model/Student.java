@@ -5,36 +5,36 @@ public class Student {
     private String mssv;
     private String hoTen;
     private String gioiTinh;
-    private Long khoa_id;
+    private String khoa;
     private String username;
     private String password;
 
     public Student() {
     }
 
-    public Student(Long id, String mssv, String hoTen, String gioiTinh, Long khoa_id, String username, String password) {
+    public Student(Long id, String mssv, String hoTen, String gioiTinh, String khoa, String username, String password) {
         this.id = id;
         this.mssv = mssv;
         this.hoTen = hoTen;
         this.gioiTinh = gioiTinh;
-        this.khoa_id = khoa_id;
+        this.khoa = khoa;
         this.username = username;
         this.password = password;
     }
 
-    public Student(Long id, String mssv, String hoTen, String gioiTinh, Long khoa_id) {
+    public Student(Long id, String mssv, String hoTen, String gioiTinh, String khoa) {
         this.id = id;
         this.mssv = mssv;
         this.hoTen = hoTen;
         this.gioiTinh = gioiTinh;
-        this.khoa_id = khoa_id;
+        this.khoa = khoa;
     }
 
-    public Student(String mssv, String hoTen, String gioiTinh, Long khoa_id) {
+    public Student(String mssv, String hoTen, String gioiTinh, String khoa) {
         this.mssv = mssv;
         this.hoTen = hoTen;
         this.gioiTinh = gioiTinh;
-        this.khoa_id = khoa_id;
+        this.khoa = khoa;
     }
 
     public Long getId() {
@@ -69,12 +69,12 @@ public class Student {
         this.gioiTinh = gioiTinh;
     }
 
-    public Long getKhoa_id() {
-        return khoa_id;
+    public String getKhoa() {
+        return khoa;
     }
 
-    public void setKhoa_id(Long khoa_id) {
-        this.khoa_id = khoa_id;
+    public void setKhoa(String khoa) {
+        this.khoa = khoa;
     }
 
     public String getUsername() {
@@ -92,4 +92,6 @@ public class Student {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 }

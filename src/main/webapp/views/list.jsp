@@ -52,13 +52,16 @@
 </head>
 <body>
     <label for="select-khoa">Chọn khoa:</label>
-    <select id="select-khoa">
-        <option value="khoa1">Khoa 1</option>
-        <option value="khoa2">Khoa 2</option>
-        <option value="khoa3">Khoa 3</option>
+    <select name="select-khoa" id="select-khoa">
+        <option value="khoaHoa">Khoa Toán</option>
+        <option value="khoaLy">Khoa Lý</option>
+        <option value="khoaFast">Khoa Fast</option>
+        <option value="khoaCNTT">Khoa Công Nghệ Thông Tin</option>
+        <option value="khoaHoa">Khoa Hóa</option>
+
     </select>
-    <button class="view-button">Xem</button>
-    <button class="add-button">Thêm mới</button>
+    <button class="view-button"><a href="/StudentController?action=showStudentByKhoa&khoa">Xem</a></button>
+    <button class="add-button"><a href="/StudentController?action=create">Thêm mới</a></button>
 
     <table>
         <thead>
@@ -72,14 +75,18 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="student" items="listStudent1">
+        <c:forEach var="student" items="${listStudent}">
             <tr>
                 <td><c:out value="${student.mssv}"/></td>
                 <td><c:out value="${student.hoTen}"/></td>
                 <td><c:out value="${student.gioiTinh}"/></td>
-                <td><c:out value="${student.khoa_id}"/></td>
-                <td><button class="edit-button">Sửa</button></td>
-                <td><button class="delete-button">Xóa</button></td>
+                <td><c:out value="${student.khoa}"/></td>
+<%--                <td>Ten</td>--%>
+<%--                <td>MSSV</td>--%>
+<%--                <td>Nam</td>--%>
+<%--                <td>Hoa</td>--%>
+                <td><button class="edit-button"><a href="/StudentController?action=edit&id=${student.id}">Sửa</a></button></td>
+                <td><button class="delete-button"><a href="/StudentController?action=delete&id=${student.id}">Xóa</a></button></td>
             </tr>
         </c:forEach>
         <!-- Thêm các dòng sinh viên khác tương tự -->
