@@ -58,7 +58,7 @@ public class StudentDAO implements IStudentDAO{
     @Override
     public Student selectStudentById(Long id) {
         Student student = null;
-        String sql = "select mssv,hoten,gioitinh,khoa from sinhvien where id = ?";
+        String sql = "select mssv,hoten,gioitinh,khoa from sinhvien where sinhvien_id = ?";
         // Step 1: Establishing a Connection
         try (Connection connection = getConnection();
              // Step 2:Create a statement using connection object
@@ -182,10 +182,12 @@ public class StudentDAO implements IStudentDAO{
         String sql = "update sinhvien set mssv=?, hoten=?, gioitinh=?,khoa=? where sinhvien_id=?";
         boolean rowUpdated;
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setString(1, student.getMssv());
             statement.setString(2, student.getHoTen());
             statement.setString(3, student.getGioiTinh());
             statement.setString(4, student.getKhoa());
+            statement.setLong(5, student.getId());
             rowUpdated = statement.executeUpdate() > 0;
         }
         return rowUpdated;

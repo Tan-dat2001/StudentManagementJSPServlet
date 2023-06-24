@@ -23,6 +23,28 @@ public class StudentController extends HttpServlet {
         studentDAO = new StudentDAO();
 
     }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "";
+        }
+        try {
+            switch (action) {
+                case "create":
+                    insertStudent(request, response);
+                    break;
+                case "luu lai":
+                    updateStudent(request, response);
+                    break;
+
+            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
+        }
+
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,27 +67,6 @@ public class StudentController extends HttpServlet {
             }
 
         }
-//        switch (action) {
-//            case "create":
-//                showNewForm(request, response);
-//                break;
-//            case "edit":
-//                showEditForm(request, response);
-//                break;
-//            case "listStudentByKhoa":
-//                showStudentByKhoa(request,response);
-//            case "delete":
-//                try {
-//                    deleteStudent(request, response);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-////            case "listAllStudent":
-//            default:
-//                listStudent(request, response);
-//                break;
-//        }
     }
 
     private void showStudentByKhoa(HttpServletRequest request, HttpServletResponse response) {
@@ -91,8 +92,8 @@ public class StudentController extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
         Student existingStudent = studentDAO.selectStudentById(id);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("views/edit.jsp");
         request.setAttribute("student", existingStudent);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("views/edit.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -136,25 +137,5 @@ public class StudentController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("views/list.jsp");
         dispatcher.forward(request, response);
     }
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "";
-        }
-        try {
-            switch (action) {
-                case "create":
-                    insertStudent(request, response);
-                    break;
-                case "edit":
-                    updateStudent(request, response);
-                    break;
-            }
-        } catch (SQLException ex) {
-            throw new ServletException(ex);
-        }
-
-    }
 }

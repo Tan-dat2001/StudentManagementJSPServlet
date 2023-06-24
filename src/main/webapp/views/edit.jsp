@@ -70,15 +70,18 @@
 </head>
 <body>
 <div class="form-container">
-    <h2>Sửa sinh viên : <c:out value="${student.hoTen}"/></h2>
-    <form method="post">
+    <h2>Sửa sinh viên : ${student.hoTen}</h2>
+    <form method="post" action="/StudentController">
+        <div>
+            <div><input type="hidden"value="${student.id}" name="id"></div>
+        </div>
         <div class="form-group">
             <label for="student-id">Mã sinh viên:</label>
-            <input type="text" id="student-id" name="mssv" required>
+            <input type="text" id="student-id" name="mssv" value="${student.mssv}" required>
         </div>
         <div class="form-group">
             <label for="student-name">Họ tên:</label>
-            <input type="text" id="student-name" name="name" required>
+            <input type="text" id="student-name" name="name" value="${student.hoTen}" required>
         </div>
         <div class="form-group">
             <label>Giới tính:</label>
@@ -98,8 +101,8 @@
             </select>
         </div>
         <div class="form-group buttons">
-            <button type="submit" class="add-button"><a href="/StudentController?action=listAllStudent">Lưu lại</a></button>
-            <button type="button" class="back-button"><a href="/StudentController?action=listAllStudent">Quay lại</a></button>
+            <input type="submit" class="add-button" name="action" value="luu lai"></input>
+            <input type="button" class="back-button"><a href="/StudentController?action=listAllStudent">Quay lại</a></input>
         </div>
     </form>
 </div>
